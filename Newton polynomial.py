@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def newton_divided_diff(x, y):
     """
-    Oblicza tablicę różnic dzielonych dla danych (x, y)
+    calculates matrix of differences for (x, y)
     """
     n = len(x)
     coef = np.copy(y).astype(float)
@@ -14,7 +14,7 @@ def newton_divided_diff(x, y):
 
 def newton_polynomial(x_data, coef):
     """
-    Zwraca symboliczny wielomian interpolacyjny Newtona
+    Returns symbolic Newton's interpolation polynomial
     """
     x = sp.Symbol('x')
     n = len(coef)
@@ -28,7 +28,7 @@ def newton_polynomial(x_data, coef):
 
 def newton_interpolate(x_data, y_data, x_value):
     """
-    Oblicza wartość interpolacji Newtona w punkcie x_value
+    Calculates value of Newton's interpolation in x_value
     """
     coef = newton_divided_diff(x_data, y_data)
     n = len(coef)
@@ -37,13 +37,12 @@ def newton_interpolate(x_data, y_data, x_value):
         result = result * (x_value - x_data[i]) + coef[i]
     return result
 
-# ===== PRZYKŁAD UŻYCIA =====
 if __name__ == "__main__":
-    # Punkty danych
+    # Data points
     x_points = np.array([1, 2, 3, 4])
     y_points = np.array([1, 4, 9, 16])  # funkcja f(x) = x^2
 
-    # Obliczenie współczynników i wielomianu symbolicznego
+    # Calculating coefficients and symbolical polynomial
     coef = newton_divided_diff(x_points, y_points)
     poly = newton_polynomial(x_points, coef)
 
@@ -51,12 +50,12 @@ if __name__ == "__main__":
     print("Wielomian Newtona:")
     print(poly)
 
-    # Obliczenie wartości interpolacji
+    # Calculating interpolation value
     x_val = 2.5
     y_val = newton_interpolate(x_points, y_points, x_val)
     print(f"\nInterpolacja w punkcie x={x_val}: y={y_val}")
 
-    # (opcjonalnie) rysunek
+    # (optional) chart
     X = np.linspace(min(x_points), max(x_points), 100)
     Y = [newton_interpolate(x_points, y_points, xx) for xx in X]
     plt.scatter(x_points, y_points, color='red', label='Punkty dane')
